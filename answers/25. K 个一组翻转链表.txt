@@ -1,0 +1,73 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null) {
+            return null;
+        }
+        ListNode resultHead = head;
+
+        ListNode curNode = head;
+        ListNode preNode = null;
+
+        while (curNode != null) {
+            ListNode lastGroup = preNode;
+            ListNode thisHead = curNode;
+            int i;
+            for (i = 0; i < k; i++) {
+                if (curNode == null) {
+                    break;
+                }
+                preNode = curNode;
+                curNode = curNode.next;
+            }
+            if (i == k) {
+                // 数量满足，需要翻转
+                ListNode tmpHead = 
+                    getReverse(lastGroup == null?head:lastGroup.next, curNode);
+                if (lastGroup == null) {
+                    resultHead =  tmpHead;
+                } else {
+                    lastGroup.next = tmpHead;
+                }
+            } else {
+                // 数量不足，链表已浏览完毕，不需要操作
+            }
+            preNode = thisHead;
+        }
+        return resultHead;
+    }
+
+    // 对节点startNode（包含）到newGroup（不包含）之间的节点顺序进行反转
+    // startNode: 本组翻转的头结点
+    // newGroup:  本组翻转完成后，下一个组的头结点
+    // 返回值：翻转完成后的头结点
+    private ListNode getReverse(ListNode startNode, ListNode newGroup) {
+        if (startNode == null || startNode.next == null) {
+            return startNode;
+        }
+        ListNode returnNode;
+
+        ListNode preNode = newGroup;    // preNode会变成startNode的下一个节点
+        ListNode curNode = startNode;
+        ListNode nextNode = curNode.next;
+
+        while (nextNode != null && nextNode != newGroup) {
+            curNode.next = preNode;
+            preNode = curNode;
+            curNode = nextNode;
+            nextNode = nextNode.next;
+        }
+        curNode.next = preNode;
+        return curNode;
+    }
+
+}

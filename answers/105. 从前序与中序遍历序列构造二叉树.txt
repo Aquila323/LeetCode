@@ -1,0 +1,54 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        if (preorder == null || inorder == null) {
+            return null;
+        }
+        int preLength = preorder.length;
+        int inLength = inorder.length;
+        if (preLength == 0 || inLength == 0) {
+            return null;
+        }
+
+        int rootValue = preorder[0];
+        int i;
+        for (i = 0; i < inLength; i++) {
+            if (inorder[i] == rootValue) {
+                break;
+            }
+        }
+        if (i == inLength) {
+            return null;
+        }
+
+        int[] leftPreOrder = 
+            Arrays.copyOfRange(preorder, 1, i + 1);
+        int[] rightPreOrder = 
+            Arrays.copyOfRange(preorder, i + 1, inLength);
+        int[] leftInOrder = 
+            Arrays.copyOfRange(inorder, 0, i);
+        int[] rigthInOrder = 
+            Arrays.copyOfRange(inorder, i + 1, inLength);
+
+        TreeNode leftTree = buildTree(leftPreOrder, leftInOrder);
+        TreeNode rightTree = buildTree(rightPreOrder, rigthInOrder);
+
+        TreeNode root = new TreeNode(rootValue, leftTree, rightTree);
+
+        return root;
+    }
+}

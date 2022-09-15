@@ -1,0 +1,36 @@
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        // 执行3次遍历，第一次把<=0的数都变成N+1，确保所有元素为正数
+        // 第2次遍历把出现元素对应下标上的元素设置负号
+        // 例如数组中出现了3，就把arr[2]上的元素加个负号
+        // 第3次遍历统计未出现的元素
+
+        if (nums == null || nums.length == 0) {
+            return 1;
+        }
+        int count = nums.length;
+        final int MAX_VALUE = count + 1;
+        int i;
+        for (i = 0; i < count; i++) {
+            if (nums[i] <= 0) {
+                nums[i] = MAX_VALUE;
+            }
+        }
+
+        //数组中元素的值为1~N都是合理的，如果等于N+1就已经排除考虑范围了
+        int tmp;
+        for (i = 0; i < count; i++) {
+            tmp = Math.abs(nums[i]);
+            if (tmp < MAX_VALUE) {
+                nums[tmp - 1] = - Math.abs(nums[tmp - 1]);
+            }
+        }
+
+        for (i = 0; i < count; i++) {
+            if (nums[i] > 0) {
+                break;
+            }
+        }
+        return i + 1;
+    }
+}

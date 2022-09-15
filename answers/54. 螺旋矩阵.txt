@@ -1,0 +1,39 @@
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        List<Integer> list = new ArrayList<>();
+
+        // m向上取整，获得轮询次数
+        int times = (int)Math.ceil((double)m/2);
+        int timesN = (int)Math.ceil((double)n/2);
+        //times = 2;
+        // 每次从(i, i)开始轮询
+        for (int i = 0; i < times && i < timesN; i++) {
+            // 1.从左到右
+            for (int j = i; j < n - i; j++) {
+                list.add(matrix[i][j]);
+            }
+            // 2.从上到下
+            if (m - i * 2 - 1 > 0) {
+                for (int j = i + 1; j < m - i; j++) {
+                    list.add(matrix[j][n - 1 - i]);
+                }
+                // 3.从右到左
+                if (n - i * 2 - 1 > 0) {
+                    for (int j = n - 2 - i; j >= i; j--) {
+                        list.add(matrix[m - 1 - i][j]);
+                    }
+                    // 4.从下到上
+                    if (m - i * 2 - 2 > 0) {
+                        for (int j = m - 2 - i; j > i; j--) {
+                            list.add(matrix[j][i]);
+                        }
+                    }
+                }
+            }
+        }
+        return list;
+    }
+}

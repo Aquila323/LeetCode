@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    // 满足最近公共点的条件：
+    //  1.左右子树都包含目标叶子节点
+    //  2.节点本身就是目标叶子节点，并且其左右子树包含目标叶子节点
+    private TreeNode pNode;
+    private TreeNode qNode;
+    private TreeNode result;
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        pNode = p;
+        qNode = q;
+        result = null;
+        isContainNode(root);
+        return result;
+    }
+
+    private boolean isContainNode(TreeNode root) {
+        if (root == null) {
+            return false;
+        }
+        boolean leftBranch = isContainNode(root.left);
+        boolean rightBranch = isContainNode(root.right);
+
+        if ((leftBranch && rightBranch) || 
+            ((root == pNode || root == qNode) && (leftBranch || rightBranch))) {
+            result = root;
+            return true;
+        }
+
+        return leftBranch | rightBranch | (root == pNode || root == qNode);
+    }
+}

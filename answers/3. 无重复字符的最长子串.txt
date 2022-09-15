@@ -1,0 +1,59 @@
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.isEmpty()) {
+            return 0;
+        }
+        int startPoint = 0;
+        String curString = s.substring(0, 1);
+        int curLength = 1;
+        int maxLength = 1;
+        // Sn: 包含第n个字符的最长无重复子串长度
+        for (int i = 1; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (curString.contains(String.valueOf(ch))) {
+                int repeatIndex = curString.indexOf(ch);
+                startPoint = startPoint + repeatIndex + 1;
+                curString = s.substring(startPoint, i + 1);
+                curLength = curString.length();
+            } else {
+                curString = s.substring(startPoint, i + 1);
+                curLength++;
+                maxLength = Math.max(maxLength, curLength);
+            }
+        }
+        return maxLength;
+    }
+}
+
+#上面这个是我自己写的，维护字符串操作比较麻烦，空间复杂和时间复杂度都不是最优
+
+
+
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int maxLength = 0;
+        int curLength = 0;
+        int startingPoint = 0;
+        
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            int pos = map.get(ch);
+            if (map.containsKey(ch) && pos >= startingPoint) {
+                startingPoint = pos + 1;
+                curLength = i - startingPoint + 1;
+            } else {
+                curLength++;
+            }
+            map.put(ch, i);
+            maxLength = Math.max(maxLength, curLength);
+        }
+        return maxLength;
+    }
+}
+
+#下面这个解法很有意思，又是使用Map记录有无和坐标，不需要维护复杂的字符串了
+
+
+
