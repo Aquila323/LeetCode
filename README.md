@@ -1,2 +1,2 @@
 # LeetCode
-All the issues I solved on LeetCode will be pushed here.
+All the issues I solved on LeetCode will be published here.
