@@ -1,0 +1,58 @@
+class MyQueue {
+    private Stack<Integer> stack1; // 用于入队列
+    private Stack<Integer> stack2; // 用于出队列
+
+    public MyQueue() {
+        stack1 = new Stack<>();
+        stack2 = new Stack<>();
+    }
+    
+    public void push(int x) {
+        stack1.push(x);
+    }
+    
+    public int pop() {
+        if (stack2.isEmpty()) {
+            while (!stack1.isEmpty()) {
+                int element = stack1.pop();
+                stack2.push(element);
+            }
+        }
+        if (stack2.isEmpty()) {
+            return 0;
+        }
+        return stack2.pop();
+    }
+    
+    public int peek() {
+        if (stack2.isEmpty()) {
+            while (!stack1.isEmpty()) {
+                int element = stack1.pop();
+                stack2.push(element);
+            }
+        }
+        if (stack2.isEmpty()) {
+            return 0;
+        }
+        int element = stack2.pop();
+        stack2.push(element);
+        return element;
+    }
+    
+    public boolean empty() {
+        if (stack1.isEmpty() && stack2.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue obj = new MyQueue();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.peek();
+ * boolean param_4 = obj.empty();
+ */
