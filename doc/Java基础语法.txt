@@ -1,0 +1,252 @@
+
+----------------------------------------------------------------------------
+
+Java的数据类型包含两种：基本数据类型（值类型）、引用类型
+
+值类型变量和函数体一样保存在栈区，引用类型的变量也在栈区，但new出来的对象保存在堆区。
+因此，判断一个对象存储在堆区还是栈区，不是按照它是否是new出来的，而是要看它属于值类型还是引用类型
+（C#中的struct是值类型，因此在栈区）
+
+Java集合框架
++--------------------+------------+------+--------+----------+
+|     Interface      |    Class   | 有序 | 可重复 | 线程安全 |
++------------+-------+------------+------+--------+----------+
+|            | List  |  ArrayList |   V  |    V   |     X    |
+|            +-------+------------+------+--------+----------+
+| Collection | Set   |   HashSet  |   X  |    X   |     X    |
+|            +-------+------------+------+--------+----------+
+|            | Queue | LinkedList |   V  |    V   |     X    |
++------------+-------+------------+------+--------+----------+
+|                    |   HashMap  |   X  |        |     X    |
+|                    +------------+------+--------+----------+
+|        Map         |   TreeMap  |   V  |        |     X    |
+|                    +------------+------+--------+----------+
+|                    |  HashTable |   X  |        |     V    |
++--------------------+------------+------+--------+----------+
+
+----------------------------------------------------------------------------
+
+************************ I.数组 **********************************************************************
+（分为int[] arr类型的数组，和java.util.Arrays库）
+arr数组本身是引用数据类型，而数组中的元素，基本数据类型或引用数据类型均可。
+
+
+int[] arr类型数组---------------------------------------------
+
+
+【获取数组长度】length是数组类型中的一个public成员，可以直接使用
+arr.length
+
+
+【初始化】有四种方式，必须在创建时能确定数组的大小，并且使用过程中不可改变长度
+int[] arr = new int[]{3434, 43424, 65767, 34, 55};
+int[] arr = {1, 2, 2, 3, 4, 5};
+int[] arr = new int[4];
+	arr[0] = 3;
+	arr[1] = 3;
+	arr[2] = 3;
+int[] arr = Arrays.copyOf(arr2, arr2.length);
+
+
+【和ArrayList转化】如果希望数组长度可变，需要使用ArrayList构造，完成后再转化为int[]
+int[] arr->ArrayList: List<Integer> arrList = new ArrayList(Arrays.asList(arr));		
+					  //Arrays.asList()这个函数转化的结果不是标准库中的List，因此需要ArrayList再构造一次
+ArrayList->int[] arr: int[] arr2 = new int[arrList.size()];
+					  arrList.toArray(arr2);
+
+
+java.utl.Arrays标准库---------------------------------------------
+static静态函数意味着所有接口都可以通过类名直接使用，例：int[] arr = Arrays.copyOfRange(...)
+
+【拷贝】
+static int[] copyOf(int[] original, int newLength)  
+static int[] copyOfRange(int[] original, int from, int to)  
+
+内部实现：java.lang.System
+System.arraycopy(dataType[] srcArray,int srcIndex,int destArray,int destIndex,int length)
+
+
+【搜索】
+static int binarySearch(int[] a, int key)
+static int binarySearch(int[] a, int fromIndex, int toIndex, int key)  
+ 
+
+【排序】
+static void sort(int[] a)
+static void sort(int[] a, int fromIndex, int toIndex)  
+static <T> void sort(T[] a, Comparator<? super T> c)
+static <T> void sort(T[] a, int fromIndex, int toIndex, Comparator<? super T> c)  
+
+
+【数组填充】
+static void fill(int[] a, int val) 
+static void fill(int[] a, int fromIndex, int toIndex, int val)  
+
+
+【转化String】
+static String toString(int[] a)  
+
+
+
+************************ II.List接口 ************************************************************************
+
+
+java标准库：java.util.ArrayList
+List是接口，继承自Collection接口，最常用的实现类是ArrayList
+
+【数量、判空】
+arrList.size()
+arrList.isEmpty()
+
+【ArrayList和数组相互转化】
+数组->ArrayList：	List<Integer> arrList = new ArrayList(Arrays.asList(arr));		//Arrays.asList()这个函数转化的结果不是标准库中的List
+ArrayList->数组：	int[] arr2 = new int[arrList.size()];
+					arrList.toArray(arr2);
+【排序】
+Collections是一个静态函数库，可以对实现了Collection接口的类进行操作
+Collections.min()入参只能是泛型数组，简单数据类型的数组不具备比较大小的接口
+Collections.sort()
+Collections.sort(arr, Collections.reverseOrder())
+
+【3种遍历方法】
+1.Iterator<Integer> it = list.Iterator();
+	while (it.hasNext) {
+		System.out.println(it.next());
+	}
+2.for (Integer in : arrList) {
+	System.out.println(in);
+	}
+3.for (int i = 0; i < arrList.size(); i++) {
+	System.out.println(arrList.get(i));
+	}
+
+【剔除重复元素】这样一转换就能剔除重复元素
+LinkedHashSet<Integer> hashSet = new LinkedHashSet<>(numbersList);
+ArrayList<Integer> listWithoutDuplicates = new ArrayList<>(hashSet);
+
+
+
+
+
+
+III.Set集合
+
+
+IV.HashMap
+
+常用接口:
+get(),put(),remove(),clear(),isEmpty(),clone(),size(),
+containsKey(),containsValue(),keySet(),values()
+
+Key计算Hash值后随机存储，Value在每个桶中是链式存储，因此containsKey可在O(1)时间复杂度中寻找Map中是否包含该Key值。
+对于一个桶而言，其元素小于等于7个时使用链表存储，元素多于7个会使用红黑树存储
+
+
+
+
+V.Sting
+
+String由char[]数组构成，使用了final修饰，不可变，可理解为常量，线程安全。
+对String的每次改变都会创建一个新的对象，然后把指针指向进行改变。
+
+常用接口：
+【获取字符串长度】
+length()
+【获取指定位置的字符】
+charAt()
+String.valueOf()
+Integer.parseInt(Sting str)入参为String，不能直接传入char类型，需要通过String.valueOf将char转换为String
+【字符串比较】
+compareTo,compareToIgnoreCase(),equals(),equalsIgnoreCase(),
+valueOf(),
+indexOf(char),contains(CharSequence)
+substring(beginIndex),substring(beginIndex, endIndex)
+在JDK当中双引号括起来的字符串，例如：“abc” "def"都是直接存储在“方法区”的“字符串常量池”当中的，在堆区。
+【创建子串】
+CharSequence subSequence(int beginIndex, int endIndex)
+String substring(int beginIndex)
+String substring(int beginIndex, int endIndex)
+
+
+
+VI.
+
+
+--------------------------------------Part 3 并发 Concurrent--------------------------------------
+
+
+1.定义任务
+public class LiftOff implements Ruannable{
+	public void run() {
+	}
+}
+public static void main(String[] args) {
+	LiftOff launch = new LiftOff();
+	// 定义任务并调用.run()并不会创建新的线程，只会在原本的线程中运行这个任务。
+	launch.run();
+}
+
+
+2.创建线程
+public static void main() {
+	Thread thread = new Thread(new LiftOff());
+	// .start可以启动子线程，并在创建者线程执行中立刻返回
+	thread.start();
+	System.out.println("Thread launched.");
+}
+
+3.ThreadPool线程池
+Executor用于简化、管理线程，无需显式创建线程，动态分配和回收线程。
+
+ExecutorService exec = Executor.newCachedThreadPool();
+for (int i = 0; i < 10; i++) {
+	exec.execute(new LiftOff());
+}
+exec.shutdown();
+
+SingleThreadPool 创建单线程
+FixedThreadPool 可以指定创建线程数，一次性创建完固定数量的线程
+
+4.有返回值的任务
+实现Callable接口可以定义有返回值的任务，使用ExecutorService.submit提交任务
+
+public class TaskWithResult implements Callable {
+	public String call() {
+		return "";
+	}
+}
+
+ExecutorService exec = Executor.newCachedThreadPool();
+Future result = exec.submit(new TaskWithResult());
+try {
+	System.out.println(result.get()); // 获取Callable的运行结果
+} catch (InterruptedException e) { // 需要捕获异常
+	return;
+} finally {
+	exec.shutdown;
+}
+
+
+5.休眠
+调用静态函数 
+Thread.sleep(100); 让当前线程终止执行给定的时间
+Thread.yield(); 对线程调度器建议，释放当前线程对时间片的控制权
+
+
+6.优先级
+在run()函数的开头使用setPriority()设置线程优先级
+
+7.后台线程（守护线程）
+在程序后台运行的线程，当所有非后台线程都执行完成后，后台线程不会单独存在，也会自动结束。
+Thread daemon = new Thread(new LiftOff());
+daemon.setDaemon(true);
+daemon.start();
+例，在一个包含用户输入界面的进程中，主线程用于监听用户UI的输入，后台线程用于计算。
+
+
+
+Handler用于线程之间通信
+
+
+
+
