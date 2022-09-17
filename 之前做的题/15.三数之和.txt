@@ -1,0 +1,72 @@
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        // 由于3个数字之和是0，必定同时有正数和复数
+        // 1.把数组分为三部分：负整数、零、正整数，分别按序排列
+        List<Integer> negativeList = new ArrayList();
+        List<Integer> zeroList = new ArrayList();
+        List<Integer> positiveList = new ArrayList();
+
+        for (int n : nums) {
+            if (n < 0) {
+                negativeList.add(n);
+            } else if (n == 0) {
+                zeroList.add(n);
+            } else {
+                positiveList.add(n);
+            }
+        }
+        Collections.sort(negativeList);
+        Collections.sort(positiveList);
+
+        // 2.从负整数、正整数两个数组中各取出一个元素相加，根据结果大小，从三个不同元素中寻找是否存在
+        // 第三个数字使得三数之和为0
+
+        HashSet<List<Integer>> hashSet = new HashSet<List<Integer>>();
+        if (zeroList.size() >= 3) {
+            List<Integer> arrlist = new ArrayList<>(Arrays.asList(0, 0, 0));
+            hashSet.add(arrlist);
+        }
+
+        int negLen = negativeList.size();
+        int posLen = positiveList.size();
+
+        for (int i = 0; i < negLen; i++) {
+            for (int j = 0; j < posLen; j++) {
+                int m = negativeList.get(i);
+                int n = positiveList.get(j);
+                int sum = m + n;
+                int p = 0;
+
+                if (sum == 0) {
+                    if (!zeroList.isEmpty()) {
+                        hashSet.add(new ArrayList<>(Arrays.asList(m, 0, n)));
+                    }
+                } else if (sum < 0) {
+                    for (int k = j + 1; k < posLen; k++) {
+                        if (sum + positiveList.get(k) == 0) {
+                            p = positiveList.get(k);
+                            hashSet.add(new ArrayList<>(Arrays.asList(m, n, p)));
+                            break;
+                        } else if (sum + positiveList.get(k) > 0) {
+                            break;
+                        }
+                    }
+                } else if (sum > 0) {
+                    for (int k = i + 1; k < negLen; k++) {
+                        if (sum + negativeList.get(k) == 0) {
+                            p = negativeList.get(k);
+                            hashSet.add(new ArrayList<>(Arrays.asList(m, p, n)));
+                            break;
+                        } else if (sum + negativeList.get(k) > 0) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        List<List<Integer>> list = new ArrayList(hashSet);
+        return list;
+        // 优化：使用HashMap直接查找第三个数字是否存在，但由于原数组中可能存在重复元素，此方法不可行
+    }
+}

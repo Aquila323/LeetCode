@@ -1,0 +1,130 @@
+
+
+
+// 1.自己第一次写的是下面这个答案，使用了栈和递归（回溯法）实现DFS，在递归过程中操作栈，
+// 感觉有点多余，而且递归过程中操作同一个栈容易错
+// 执行用时：2 ms, 在所有 Java 提交中击败了6.62%的用户
+// 内存消耗：41.7 MB, 在所有 Java 提交中击败了7.36%的用户
+
+class Solution {
+    private Stack<TreeNode> stack = new Stack<>();
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root == null) {
+            return false;
+        }
+        if (root.left == null && root.right == null 
+            && targetSum == root.val) {
+            return true;
+        }
+        stack.push(root);
+        if (root.left != null 
+            && hasPathSum(root.left, targetSum - root.val)) {
+            return true;
+        }
+        if (root.right != null
+            && hasPathSum(root.right, targetSum - root.val)) {
+            return true;
+        }
+        stack.pop();
+        return false;
+    }
+}
+
+
+
+// 2.看了官方题解后，用栈和单循环实现了DFS，时间复杂度为O(N)，每个节点只需遍历一次
+
+class Solution {
+    // 基于栈的DFS
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        Stack<TreeNode> nodeStack = new Stack<>();
+        Stack<Integer> valStack = new Stack<>();
+
+        if (root == null) {
+            return false;
+        }
+
+        nodeStack.push(root);
+        valStack.push(root.val);
+        while (!nodeStack.isEmpty()) {
+            TreeNode node = nodeStack.pop();
+            int value = valStack.pop();
+            if (node.left == null && node.right == null
+                && value == targetSum) {
+                return true;
+            }
+            if (node.right != null) {
+                nodeStack.push(node.right);
+                valStack.push(value + node.right.val);
+            }
+            if (node.left != null) {
+                nodeStack.push(node.left);
+                valStack.push(value + node.left.val);
+            }
+        }
+        return false;
+    }
+}
+
+
+
+// 3.用队列和单循环实现了BFS
+// 执行用时：1 ms, 在所有 Java 提交中击败了15.26%的用户
+// 内存消耗：41.1 MB, 在所有 Java 提交中击败了91.41%的用户
+
+class Solution {
+    // 基于队列的BFS
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        Queue<Integer> valQueue = new LinkedList<>();
+
+        if (root == null) {
+            return false;
+        }
+
+        nodeQueue.add(root);
+        valQueue.add(root.val);
+
+        while (!nodeQueue.isEmpty()) {
+            TreeNode node = nodeQueue.poll();
+            int value = valQueue.poll();
+            if (node.left == null && node.right == null
+                && value == targetSum) {
+                return true;
+            }
+            if (node.left != null) {
+                nodeQueue.add(node.left);
+                valQueue.add(value + node.left.val);
+            }
+            if (node.right != null) {
+                nodeQueue.add(node.right);
+                valQueue.add(value + node.right.val);
+            }
+        }
+        return false;
+    }
+}
+
+// 4.直接递归完成DFS，简单直接，效果拔群
+// 执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+// 内存消耗：41.2 MB, 在所有 Java 提交中击败了67的用户
+class Solution {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root == null) {
+            return false;
+        }
+        if (root.left == null && root.right == null
+            && root.val == targetSum) {
+            return true;
+        }
+        if (root.left != null
+            && hasPathSum(root.left, targetSum - root.val)) {
+            return true;
+        }
+        if (root.right != null
+            && hasPathSum(root.right, targetSum - root.val)) {
+            return true;
+        }
+        return false;
+    }
+}

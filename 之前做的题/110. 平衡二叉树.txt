@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        return cauculateDeepth(root) == -1 ? false : true;
+    }
+
+    // 返回该节点树的深度，返回值-1表示该树不是平衡二叉树
+    private int cauculateDeepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int leftDeepth = cauculateDeepth(root.left);
+        int rightDeepth = cauculateDeepth(root.right);
+        if (leftDeepth == -1 || rightDeepth == -1) {
+            return -1;
+        }
+
+        if (Math.abs(leftDeepth - rightDeepth) > 1) {
+            return -1;
+        }
+        return Math.max(leftDeepth, rightDeepth) + 1;
+    }
+}
+
+执行结果：
+通过
+显示详情
+添加备注
+
+执行用时：
+0 ms
+, 在所有 Java 提交中击败了
+100.00%
+的用户
+内存消耗：
+41.1 MB
+, 在所有 Java 提交中击败了
+30.87%
+的用户
+通过测试用例：
+228 / 228

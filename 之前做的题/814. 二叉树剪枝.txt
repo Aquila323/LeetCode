@@ -1,0 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode pruneTree(TreeNode root) {
+        if (dfsReserve(root)) {
+            return root;
+        }
+        return null;
+    }
+
+    /*
+     * 以该节点为根的子树，经过dfs裁剪后是否该保留
+     * 返回值：true 保留 / false 不保留
+     */
+    private boolean dfsReserve(TreeNode root) {
+        if (root == null) {
+            return false;
+        }
+
+        boolean leftReserve = true;
+        boolean rightReserve = true;
+        if (!dfsReserve(root.left)) { // 左子树不保留
+            root.left = null;
+            leftReserve = false;
+        }
+        if (!dfsReserve(root.right)) { // 右子树不保留
+            root.right = null;
+            rightReserve = false;
+        }
+
+        if (leftReserve || rightReserve) {
+            return true;
+        }
+        return root.val == 1 ? true : false;
+    }
+}

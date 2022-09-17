@@ -1,0 +1,103 @@
+class Solution {
+    private List<String> list = new ArrayList<>();
+    private String digitNum;
+    private int lenght;
+
+    public List<String> letterCombinations(String digits) {
+        if (digits == null || digits.length() == 0) {
+            return list;
+        }
+
+        digitNum = digits;
+        lenght = digitNum.length();
+        generateComb(new String(), 0);
+        return list;
+    }
+
+    // pos：digits的下标，表示第几个数字
+    private void generateComb(String curStr, int pos) {
+        if (pos >= lenght) {
+            list.add(curStr);
+            return;
+        }
+        int num = Integer.parseInt(String.valueOf(digitNum.charAt(pos)));
+        switch (num) {
+            case 2:
+                generateComb(curStr + "a", pos + 1);
+                generateComb(curStr + "b", pos + 1);
+                generateComb(curStr + "c", pos + 1);
+                break;
+            case 3:
+                generateComb(curStr + "d", pos + 1);
+                generateComb(curStr + "e", pos + 1);
+                generateComb(curStr + "f", pos + 1);
+                break;
+            case 4:
+                generateComb(curStr + "g", pos + 1);
+                generateComb(curStr + "h", pos + 1);
+                generateComb(curStr + "i", pos + 1);
+                break;
+            case 5:
+                generateComb(new String(curStr + "j"), pos + 1);
+                generateComb(new String(curStr + "k"), pos + 1);
+                generateComb(new String(curStr + "l"), pos + 1);
+                break;
+            case 6:
+                generateComb(new String(curStr + "m"), pos + 1);
+                generateComb(new String(curStr + "n"), pos + 1);
+                generateComb(new String(curStr + "o"), pos + 1);
+                break;
+            case 7:
+                generateComb(new String(curStr + "p"), pos + 1);
+                generateComb(new String(curStr + "q"), pos + 1);
+                generateComb(new String(curStr + "r"), pos + 1);
+                generateComb(new String(curStr + "s"), pos + 1);
+                break;
+            case 8:
+                generateComb(new String(curStr + "t"), pos + 1);
+                generateComb(new String(curStr + "u"), pos + 1);
+                generateComb(new String(curStr + "v"), pos + 1);
+                break;
+            case 9:
+                generateComb(new String(curStr + "w"), pos + 1);
+                generateComb(new String(curStr + "x"), pos + 1);
+                generateComb(new String(curStr + "y"), pos + 1);
+                generateComb(new String(curStr + "z"), pos + 1);
+                break;
+            default:
+                return;
+        }
+    }
+}
+
+
+
+
+
+
+#题解
+我使用的是递归方法，效率低
+答案中给出的是单循环+队列方法
+1.外层循环，每次处理一个数字
+
+例如，234
+
+第一轮：
+1.a/b/c
+
+第二轮：（共3次出队，3*3次入队，因为上一轮有3个元素）
+2.b/c/ad/ae/af
+3.c/ad/ae/af/bd/be/bf
+4.ad/ae/af/bd/be/bf/cd/ce/cf
+
+第三轮：（共9次出队，9*3次入队，因为上一轮有9个元素）
+5.ae/af/bd/be/bf/cd/ce/cf/adg/adh/adi
+6...
+
+每次从队首出一个String，和本轮次的数字对应字母组合，放到队尾
+每轮循环完成后，队列中各成员的长度都相同
+
+
+
+
+

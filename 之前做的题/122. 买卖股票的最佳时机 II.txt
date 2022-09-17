@@ -1,0 +1,13 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        int sum = 0;
+        int pre = prices[0];
+        for (int price : prices) {
+            if (price > pre) {
+                sum += (price - pre);
+            }
+            pre = price;
+        }
+        return sum;
+    }
+}

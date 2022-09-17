@@ -1,0 +1,35 @@
+不是说这个解答不好，但我感觉他对“一次交易”的定义非常不清晰。
+
+不清晰之一：buy数组的长度为什么是k+1维？难道我有k+1次交易吗？如果你说第0次是初始化用的，第一次才是真正的交易，那为什么buy[0]初始化成-prices[0]？这都已经买了股票了，怎么就不算真正的交易呢？
+
+不清晰之二：在主循环里，只对buy[0]的值进行维护，你从头到尾都看不到维护sell[0]的值的代码（不算初始化），这真的超奇怪，第0次交易的股票我买了，然后我不管他怎么卖？？
+
+多的就不吐槽了，越说越乱，我直接写下我的解法。
+
+我定义，买一次再卖一次才算一次交易，k从0开始。buy[0]发生在sell[0]之前，sell[0]发生在buy[1]之前。 buy[k]是持有第k次交易的股票时（可以是今天买的，也可以是以前买的），获取的最大利益；sell[k]是不持有第k次交易的股票时（可以是今天卖的，也可以是以前卖的），获取的最大利益。 我的代码里，buy数组的长度就是k，而不是k+1。然后，buy[0] sell[0]都需要维护。最后return sell[k-1]即可。
+
+class Solution {
+    public int maxProfit(int k, int[] prices) {
+        if(prices.length==0 || k==0) {
+            return 0;
+        }
+        int[] buy = new int[k];
+        int[] sell = new int[k];
+        Arrays.fill(buy,-prices[0]);
+
+        for(int i = 1; i < prices.length; i++) {
+            buy[0] = Math.max(buy[0], -prices[i]);
+            sell[0] = Math.max(sell[0], buy[0] + prices[i]);
+            
+            for(int j = 1; j < k; j++) {
+                buy[j] = Math.max(buy[j], sell[j-1] - prices[i]);
+                sell[j] = Math.max(sell[j], buy[j] + prices[i]);
+            }
+        }
+        return sell[k-1];
+    }
+}
+
+并不是批评原解法，我相信底层逻辑都是一样的。我只是觉得他的解法个人不好理解。
+
+用这个思路也可以解决所有股票题目。
