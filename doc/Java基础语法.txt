@@ -58,7 +58,7 @@ ArrayList->int[] arr: int[] arr2 = new int[arrList.size()];
 java.utl.Arrays标准库---------------------------------------------
 static静态函数意味着所有接口都可以通过类名直接使用，例：int[] arr = Arrays.copyOfRange(...)
 
-【拷贝】
+【拷贝】Arrays.copyOf()
 static int[] copyOf(int[] original, int newLength)  
 static int[] copyOfRange(int[] original, int from, int to)  
 
@@ -66,24 +66,24 @@ static int[] copyOfRange(int[] original, int from, int to)
 System.arraycopy(dataType[] srcArray,int srcIndex,int destArray,int destIndex,int length)
 
 
-【搜索】
+【搜索】Arrays.binarySearch()
 static int binarySearch(int[] a, int key)
 static int binarySearch(int[] a, int fromIndex, int toIndex, int key)  
  
 
-【排序】
+【排序】Arrays.sort()
 static void sort(int[] a)
 static void sort(int[] a, int fromIndex, int toIndex)  
 static <T> void sort(T[] a, Comparator<? super T> c)
 static <T> void sort(T[] a, int fromIndex, int toIndex, Comparator<? super T> c)  
 
 
-【数组填充】
+【数组填充】Arrays.fill()
 static void fill(int[] a, int val) 
 static void fill(int[] a, int fromIndex, int toIndex, int val)  
 
 
-【转化String】
+【转化String】Arrsys.toString()
 static String toString(int[] a)  
 
 
