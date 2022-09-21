@@ -167,6 +167,10 @@ CharSequence subSequence(int beginIndex, int endIndex)
 String substring(int beginIndex)
 String substring(int beginIndex, int endIndex)
 
+【字符串分割】
+split(" ")，以目标字符串作为分割条件，将原有字符串拆分成多个子串，作为数组输出
+需要注意，如果原字符串中有连续多个空格符，分割结果的数组中可能存在""空字符，要加以判断
+
 
 
 VI.

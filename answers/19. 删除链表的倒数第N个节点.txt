@@ -1,0 +1,43 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if (head == null) {
+            return null;
+        }
+        ListNode curNode = head;
+        // curNode 移动到正数第n个节点
+        for (int i = 0; i < n - 1; i++) {
+            curNode = curNode.next;
+        }
+        if (curNode.next == null) {
+            // n-1 次移动后到链表尾，说明删除的是头结点
+            curNode = head.next;
+            head.next = null;
+            return curNode;            
+        }
+
+        ListNode removeNode = head.next;
+        ListNode preNode = head;
+        curNode = curNode.next;
+        // curNode移动到尾节点
+        while (curNode.next != null) {
+            curNode = curNode.next;
+            preNode = removeNode;
+            removeNode = removeNode.next;
+        }
+        
+        // 移除目标节点
+        preNode.next = removeNode.next;
+        removeNode = null;
+        return head;
+    }
+}
