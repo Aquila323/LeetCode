@@ -1,0 +1,62 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null) {
+            return false;
+        }
+        HashSet<ListNode> hashSet = new HashSet<>();
+        ListNode curNode = head;
+        while (curNode != null) {
+            if (hashSet.contains(curNode)) {
+                return true;
+            }
+            hashSet.add(curNode);
+            curNode = curNode.next;
+        }
+        return false;
+    }
+}
+
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null) {
+            return false;
+        }
+        ListNode slowPtr = head;
+        ListNode fastPtr = head.next;
+        while (slowPtr != fastPtr) {
+            if (slowPtr == null || fastPtr == null) {
+                return false;
+            }
+            slowPtr = slowPtr.next;
+            fastPtr = fastPtr.next;
+            if (fastPtr == null) {
+                return false;
+            }
+            fastPtr = fastPtr.next;
+        }
+        return true;
+    }
+}

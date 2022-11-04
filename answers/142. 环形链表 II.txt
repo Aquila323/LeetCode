@@ -1,0 +1,42 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode slow = head.next;
+        ListNode fast = head.next;
+        if (fast == null) {
+            return null;
+        }
+        fast = fast.next;
+        while (slow != fast) {
+            if (slow == null || fast == null) {
+                return null;
+            }
+            slow = slow.next;
+            fast = fast.next;
+            if (fast == null) {
+                return null;
+            }
+            fast = fast.next;
+        }
+        // 走到这里说明链表有环，且slow和fast指向的是第一次相遇的节点
+        fast = head;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return fast;
+    }
+}
