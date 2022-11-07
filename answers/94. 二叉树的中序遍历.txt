@@ -1,0 +1,129 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private List<Integer> arrayList = new ArrayList<>();
+
+    public List<Integer> inorderTraversal(TreeNode root) {
+        traversal(root);
+        return arrayList;
+    }
+
+    private void traversal(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        if (root.left != null) {
+            traversal(root.left);
+        }
+        arrayList.add(root.val);
+        if (root.right != null) {
+            traversal(root.right);
+        }
+        return;
+    }
+}
+
+
+
+// 下面是我的解法
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private HashSet<TreeNode> hashSet = new HashSet<>();
+    private Stack<TreeNode> stack = new Stack<>();
+    private List<Integer> list = new ArrayList<>();
+
+    public List<Integer> inorderTraversal(TreeNode root) {
+        if (root == null) {
+            return list;
+        }
+        stack.push(root);
+        while (!stack.empty()) {
+            TreeNode node = stack.pop();
+            if (node == null) {
+                continue;
+            }
+            if (hashSet.contains(node)) {
+                list.add(node.val);
+            } else {
+                hashSet.add(node);
+                stack.push(node.right);
+                stack.push(node);
+                stack.push(node.left);
+            }
+        }
+        return list;
+    }
+
+}
+
+
+
+
+看过答案题解以后的写法
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private List<Integer> list = new ArrayList<>();
+    private Stack<TreeNode> stack = new Stack<>();
+    public List<Integer> inorderTraversal(TreeNode root) {
+        // 每走到一个新节点（没入栈的）就先将左子树入栈
+        // 只有出栈节点才加入访问列表中
+        TreeNode node = root;
+        while (!stack.empty() || node != null) {
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            list.add(node.val);
+            node = node.right;
+        }
+        return list;
+    }
+}
+
+
+
+
+

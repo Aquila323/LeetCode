@@ -1,0 +1,56 @@
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        // 中位数是位于有序数组最中间位置的数字
+        // 相当于是从两个数组中找到第(m+n)/2小的元素
+        if (nums1 == null || nums2 == null) {
+            return 0;
+        }
+        int m = nums1.length;
+        int n = nums2.length;
+        if (m + n == 0) {
+            return 0;
+        }
+
+        if (m + n == 1) {
+            return (m == 0) ? nums2[0] : nums1[0];
+        }
+
+        int loc = (m + n) / 2;
+        int p1 = 0;
+        int p2 = 0;
+        int middle1 = 0;
+        int middle2 = 0;
+
+        for (int i = 0; i < loc; i++) {
+            if (p1 < m && p2 < n) {
+                if (nums1[p1] < nums2[p2]) {
+                    middle1 = nums1[p1];
+                    p1++;
+                } else {
+                    middle1 = nums2[p2];
+                    p2++;
+                }
+            } else if (p1 < m) {
+                middle1 = nums1[p1];
+                p1++;
+            } else {
+                middle1 = nums2[p2];
+                p2++;
+            }
+        }
+
+        if (p1 < m && p2 < n) {
+            middle2 = Math.min(nums1[p1], nums2[p2]);
+        } else if (p1 < m) {
+            middle2 = nums1[p1];
+        } else {
+            middle2 = nums2[p2];
+        }
+
+        if (loc*2 == (m + n)) { // 偶数个元素，需要取两个中位数
+            return ((double)middle1 + (double)middle2) / 2;
+        } else { // 奇数个元素，只取一个
+            return (double)middle2;
+        }
+    }
+}
