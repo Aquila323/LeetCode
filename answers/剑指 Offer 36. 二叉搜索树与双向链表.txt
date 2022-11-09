@@ -1,0 +1,85 @@
+
+
+// 迭代方法，栈实现DFS中序遍历
+
+class Solution {
+    public Node treeToDoublyList(Node root) {
+        if (root == null) {
+            return root;
+        }
+        // DFS 中序遍历
+        Node head = null;
+        Stack<Node> stack = new Stack<>();
+
+        Node node = root;
+        Node pre = null;
+        while (!stack.empty() || node != null) {
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            if (head == null) {
+                head = node;
+            }
+            if (pre != null) {
+                pre.right = node;
+            }
+            node.left = pre;
+            pre = node;
+            node = node.right;
+        }
+        pre.right = head;
+        head.left = pre;
+        return head;
+    }
+}
+
+
+// 递归方法
+
+class Solution {
+    public Node treeToDoublyList(Node root) {
+        Node head = treeToLinkedList(root);
+        if (head == null) {
+            return head;
+        }
+        Node tail = head;
+        while (tail.right != null) {
+            tail = tail.right;
+        }
+        tail.right = head;
+        head.left = tail;
+        return head;
+    }
+
+    private Node treeToLinkedList(Node root) {
+        if (root == null) {
+            return root;
+        }
+        Node leftHead = treeToLinkedList(root.left);
+        Node rightHead = treeToLinkedList(root.right);
+
+        if (leftHead == null) {
+            if (rightHead != null) {
+                root.right = rightHead;
+                rightHead.left = root;
+            }
+            return root;
+        }
+
+        Node node = leftHead;
+        while (node.right != null) {
+            node = node.right;
+        }
+        node.right = root;
+        root.left = node;
+        root.right = rightHead;
+        if (rightHead != null) {
+            rightHead.left = root;
+        }
+        return leftHead;
+    }
+}
+
+

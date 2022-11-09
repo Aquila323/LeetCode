@@ -1,0 +1,78 @@
+
+
+
+// 我一开始的写法
+
+class Solution {
+    public String addStrings(String num1, String num2) {
+        String digit1 = reverseString(num1);
+        String digit2 = reverseString(num2);
+
+        int len1 = digit1.length();
+        int len2 = digit2.length();
+        int totalLen = Math.max(len1, len2);
+
+        int promote = 0;
+        StringBuilder resultBuilder = new StringBuilder();
+
+        for (int i = 0; i < totalLen; i++) {
+            int sum = promote;
+            if (i < len1) {
+                String str = String.valueOf(digit1.charAt(i));
+                sum += Integer.parseInt(str);
+            }
+            if (i < len2) {
+                String str = String.valueOf(digit2.charAt(i));
+                sum += Integer.parseInt(str);
+            }
+            promote = (sum >= 10) ? 1 : 0;
+            sum = sum % 10;
+            resultBuilder.append((char)(sum + '0'));
+        }
+        if (promote == 1) {
+            resultBuilder.append('1');
+        }
+        return reverseString(resultBuilder.toString());
+    }
+
+    private String reverseString(String e) {
+        StringBuilder builder = new StringBuilder();
+        int length = e.length();
+        for (int i = length - 1; i >= 0; i--) {
+            builder.append(e.charAt(i));
+        }
+        return builder.toString();
+    }
+}
+
+
+
+// 看过官方题解后的写法
+
+
+class Solution {
+    public String addStrings(String num1, String num2) {
+        int len1 = num1.length() - 1;
+        int len2 = num2.length() - 1;
+        int carry = 0;
+        StringBuilder builder = new StringBuilder();
+
+        while (len1 >= 0 || len2 >= 0 || carry != 0) {
+            int digit1 = len1 >= 0 ? num1.charAt(len1) - '0' : 0;
+            int digit2 = len2 >= 0 ? num2.charAt(len2) - '0' : 0;
+            int sum = digit1 + digit2 + carry;
+
+            builder.append(sum % 10);
+            carry = sum / 10;
+            len1--;
+            len2--;
+        }
+        return builder.reverse().toString();
+    }
+}
+
+
+
+
+
+
